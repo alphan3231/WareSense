@@ -16,6 +16,7 @@
 /Users/elliot/Documents/GitHub/WareSense/src/main/java/com/waresense/backend/security/JwtUtils.java
 /Users/elliot/Documents/GitHub/WareSense/src/main/java/com/waresense/backend/entity/WarehouseZone.java
 /Users/elliot/Documents/GitHub/WareSense/src/main/java/com/waresense/backend/entity/Category.java
+/Users/elliot/Documents/GitHub/WareSense/src/main/java/com/waresense/backend/config/WebConfig.java
 /Users/elliot/Documents/GitHub/WareSense/src/main/java/com/waresense/backend/entity/OrderStatus.java
 /Users/elliot/Documents/GitHub/WareSense/src/main/java/com/waresense/backend/controller/AuthController.java
 /Users/elliot/Documents/GitHub/WareSense/src/main/java/com/waresense/backend/repository/InventoryItemRepository.java

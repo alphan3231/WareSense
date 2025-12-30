@@ -8,6 +8,7 @@ com/waresense/backend/repository/ProductRepository.class
 com/waresense/backend/repository/WarehouseZoneRepository.class
 com/waresense/backend/controller/QrCodeController.class
 com/waresense/backend/exception/GlobalExceptionHandler.class
+com/waresense/backend/config/WebConfig.class
 com/waresense/backend/dto/AuthDto$LoginRequest$LoginRequestBuilder.class
 com/waresense/backend/security/SecurityConfig.class
 com/waresense/backend/service/ProductService.class

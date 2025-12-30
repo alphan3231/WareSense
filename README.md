@@ -16,6 +16,17 @@ WareSense is a modern, high-performance Warehouse Management System (WMS) built 
     - QR/Barcode generation for products and shelves.
     - Automated PDF Reporting.
 
+## 💻 Frontend (Lightweight)
+
+This project includes a lightweight frontend using HTML, JS, and Tailwind CSS.
+No installation (npm/node) is required.
+
+1.  **Start the Backend** first using `./run.sh`.
+2.  Open **`frontend/index.html`** in any web browser.
+    - You can simply double-click the file to open it via `file://` protocol.
+3.  Register a new user (select a Role) and Login.
+4.  Access the Dashboard to manage products.
+
 ## 🛠 Tech Stack
 
 - **Backend**: Java 17, Spring Boot 3, Spring Security, Spring Data JPA

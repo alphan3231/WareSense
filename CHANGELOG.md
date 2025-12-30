@@ -2,7 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.4.0] - 2025-12-30
+### Added
+- **Frontend (Lightweight)**:
+    - `frontend/index.html`: Login and Registration page using Tailwind CSS (CDN).
+    - `frontend/dashboard.html`: Dashboard for Product management and Reports.
+    - Implemented API integration using Fetch API.
+- **Backend Configuration**:
+    - Enabled CORS for all origins to support separated frontend.
+    - Added `run.sh` script for automated setup (Java check, Docker start, Build & Run).
+    - Added a startup banner with API and Swagger URLs.
+- **Dependencies**:
+    - Fixed missing `springdoc-openapi-starter-webmvc-ui` and `jjwt-jackson`.
+
+## [0.3.0] - 2025-12-30
+### Added
+- **Core Domain Logic**:
+    - Services & Controllers for `Product`, `Warehouse` (Zones/Shelves), and `Inventory`.
+    - Implemented capacity checking logic for shelves.
+- **Intelligence & Reporting**:
+    - **RoutingService**: TSP algorithm for optimal picking routes.
+    - **QrCodeService**: ZXing integration for generating QR codes.
+    - **ReportService**: JasperReports integration for PDF inventory reports.
+- **Documentation**:
+    - Swagger UI enabled and fixed security access (`/swagger-ui/**`).
 
 ## [0.2.0] - 2025-12-30
 ### Added
