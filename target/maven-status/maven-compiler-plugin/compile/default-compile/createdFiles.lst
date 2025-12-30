@@ -6,6 +6,7 @@ com/waresense/backend/dto/WarehouseDto.class
 com/waresense/backend/dto/AuthDto$RegisterRequest.class
 com/waresense/backend/repository/ProductRepository.class
 com/waresense/backend/repository/WarehouseZoneRepository.class
+com/waresense/backend/controller/QrCodeController.class
 com/waresense/backend/exception/GlobalExceptionHandler.class
 com/waresense/backend/dto/AuthDto$LoginRequest$LoginRequestBuilder.class
 com/waresense/backend/security/SecurityConfig.class
@@ -27,6 +28,7 @@ com/waresense/backend/dto/WarehouseDto$ZoneDto.class
 com/waresense/backend/entity/Order$OrderBuilder.class
 com/waresense/backend/entity/User.class
 com/waresense/backend/controller/WarehouseController.class
+com/waresense/backend/controller/RoutingController.class
 com/waresense/backend/entity/WarehouseZone.class
 com/waresense/backend/dto/WarehouseDto$ShelfDto$ShelfDtoBuilder.class
 com/waresense/backend/security/CustomUserDetailsService.class
@@ -43,10 +45,14 @@ com/waresense/backend/controller/AuthController.class
 com/waresense/backend/repository/ShelfRepository.class
 com/waresense/backend/dto/InventoryDto.class
 com/waresense/backend/service/WarehouseService.class
+com/waresense/backend/service/QrCodeService.class
 com/waresense/backend/security/JwtUtils.class
 com/waresense/backend/dto/ProductDto$ProductDtoBuilder.class
 com/waresense/backend/entity/User$UserBuilder.class
 com/waresense/backend/dto/AuthDto$AuthResponse$AuthResponseBuilder.class
+com/waresense/backend/service/ReportService.class
+com/waresense/backend/controller/ReportController.class
+com/waresense/backend/service/RoutingService.class
 com/waresense/backend/entity/Category.class
 com/waresense/backend/entity/Shelf$ShelfBuilder.class
 com/waresense/backend/repository/OrderRepository.class
