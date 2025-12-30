@@ -11,8 +11,16 @@ public class BackendApplication {
 	}
 
 	@org.springframework.context.annotation.Bean
-	public org.springframework.boot.CommandLineRunner commandLineRunner(org.springframework.core.env.Environment env) {
+	public org.springframework.boot.CommandLineRunner commandLineRunner(org.springframework.core.env.Environment env, com.waresense.backend.repository.RoleRepository roleRepository) {
 		return args -> {
+			// Seed Roles
+			java.util.List<String> roles = java.util.Arrays.asList("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_COURIER");
+			for (String roleName : roles) {
+				if (roleRepository.findByName(roleName).isEmpty()) {
+					roleRepository.save(com.waresense.backend.entity.Role.builder().name(roleName).build());
+				}
+			}
+
 			String port = env.getProperty("server.port", "8080");
 			System.out.println("\n\n=============================================================");
 			System.out.println("🚀 WareSense Backend Started Successfully!");

@@ -33,7 +33,7 @@ public class AuthService {
             throw new RuntimeException("Email already exists");
         }
 
-        Role role = roleRepository.findByName("ROLE_" + request.getRole())
+        Role role = roleRepository.findByName(request.getRole())
                 .orElseThrow(() -> new RuntimeException("Role not found: " + request.getRole()));
 
         User user = User.builder()
@@ -57,9 +57,15 @@ public class AuthService {
     }
 
     public AuthDto.AuthResponse login(AuthDto.LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-        );
+        System.out.println("Login attempt for: " + request.getUsername());
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+            );
+        } catch (Exception e) {
+            System.err.println("Authentication failed for user: " + request.getUsername() + " - " + e.getMessage());
+            throw e;
+        }
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(request.getUsername());
         String token = jwtUtils.generateToken(userDetails);

@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.0] - 2025-12-30
+### Added
+- **Frontend Served via Spring Boot**:
+    - Moved frontend files to `src/main/resources/static`.
+    - Frontend accessible directly from `http://localhost:8080`.
+- **Auth Improvements**:
+    - Login now supports both **username** and **email**.
+    - Added `findByEmail` to `UserRepository`.
+    - Updated `CustomUserDetailsService` to search by username OR email.
+- **Role Seeding**:
+    - Default roles (`ROLE_ADMIN`, `ROLE_MANAGER`, `ROLE_COURIER`) are now auto-created on startup.
+- **Debug Logging**:
+    - Added login attempt logging to `AuthService`.
+
+### Fixed
+- Fixed registration failure due to missing roles in database.
+- Fixed login failure when user entered email instead of username.
+
 ## [0.4.0] - 2025-12-30
 ### Added
 - **Frontend (Lightweight)**:

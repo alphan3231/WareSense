@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WareSense - Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script> <!-- Icons -->
+</head>
+
+<body class="bg-gray-100 flex h-screen">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-slate-900 text-white flex flex-col transition-all duration-300">
+        <div class="h-16 flex items-center justify-center font-bold text-2xl border-b border-gray-700 tracking-wider">
+            WARESENSE
+        </div>
+
+        <nav class="flex-1 px-2 py-4 space-y-2">
+            <a href="#" class="flex items-center space-x-3 px-4 py-3 rounded-lg bg-blue-600 text-white shadow-lg">
+                <i data-lucide="package"></i>
+                <span class="font-medium">Products</span>
+            </a>
+            <a href="#"
+                class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-300 transition"
+                onclick="alert('Feature coming soon')">
+                <i data-lucide="warehouse"></i>
+                <span class="font-medium">Inventory</span>
+            </a>
+            <a href="#"
+                class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-300 transition"
+                onclick="alert('Feature coming soon')">
+                <i data-lucide="truck"></i>
+                <span class="font-medium">Orders</span>
+            </a>
+            <a href="#"
+                class="flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-slate-800 text-gray-300 transition"
+                onclick="downloadReport()">
+                <i data-lucide="file-text"></i>
+                <span class="font-medium">Report</span>
+            </a>
+        </nav>
+
+        <div class="p-4 border-t border-gray-700">
+            <button onclick="logout()"
+                class="flex items-center space-x-2 text-red-400 hover:text-red-300 transition w-full justify-center">
+                <i data-lucide="log-out"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col overflow-hidden">
+        <!-- Header -->
+        <header class="h-16 bg-white shadow flex items-center justify-between px-8">
+            <h2 class="text-xl font-semibold text-gray-700">Product Management</h2>
+            <div class="flex items-center space-x-4">
+                <div class="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-bold">A
+                </div>
+                <span class="text-gray-600 font-medium">Admin User</span>
+            </div>
+        </header>
+
+        <!-- Content Body -->
+        <div class="flex-1 overflow-auto p-8">
+            <div class="flex justify-between items-center mb-6">
+                <div class="relative">
+                    <input type="text" placeholder="Search products..."
+                        class="pl-10 pr-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
+                    <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"></i>
+                </div>
+                <button onclick="openModal()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center space-x-2 shadow transition">
+                    <i data-lucide="plus"></i>
+                    <span>Add Product</span>
+                </button>
+            </div>
+
+            <!-- Product Table -->
+            <div class="bg-white rounded-lg shadow overflow-hidden">
+                <table class="min-w-full">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                SKU</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Name</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Category</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Volume</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-list" class="bg-white divide-y divide-gray-200">
+                        <!-- JS injected rows -->
+                    </tbody>
+                </table>
+                <div id="loading" class="text-center py-6 text-gray-500">Loading products...</div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Product Modal -->
+    <div id="modal"
+        class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center backdrop-blur-sm transition-opacity">
+        <div class="bg-white rounded-lg shadow-xl w-96 p-6 transform transition-all scale-100">
+            <h3 class="text-xl font-bold mb-4 text-gray-800">New Product</h3>
+            <form onsubmit="addProduct(event)" class="space-y-4">
+                <input type="text" id="p-sku" placeholder="SKU"
+                    class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <input type="text" id="p-name" placeholder="Name"
+                    class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                <!-- Hardcoded category ID for demo -->
+                <input type="hidden" id="p-cat-id" value="1">
+                <div class="flex space-x-2">
+                    <input type="number" id="p-vol" placeholder="Volume"
+                        class="w-1/2 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                    <input type="number" id="p-min" placeholder="Min Stock"
+                        class="w-1/2 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                </div>
+                <textarea id="p-desc" placeholder="Description"
+                    class="w-full border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" onclick="closeModal()"
+                        class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">Cancel</button>
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        const API_BASE = "http://localhost:8080/api";
+        const token = localStorage.getItem('token');
+
+        if (!token) window.location.href = 'index.html';
+
+        async function fetchProducts() {
+            try {
+                const res = await fetch(`${API_BASE}/products`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const products = await res.json();
+
+                const tbody = document.getElementById('product-list');
+                const loading = document.getElementById('loading');
+                tbody.innerHTML = '';
+                loading.classList.add('hidden');
+
+                products.forEach(p => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-gray-50 transition";
+                    tr.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${p.sku}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${p.name}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${p.categoryName || 'General'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${p.volumePerUnit} m³</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-blue-600 hover:underline cursor-pointer" onclick="showQr('${p.sku}')">
+                            <i data-lucide="qr-code" class="w-4 h-4 inline mr-1"></i>QR
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                lucide.createIcons(); // Re-init icons for new elements
+            } catch (err) {
+                console.error(err);
+                alert('Failed to load products');
+            }
+        }
+
+        async function addProduct(e) {
+            e.preventDefault();
+            const sku = document.getElementById('p-sku').value;
+            const name = document.getElementById('p-name').value;
+            const desc = document.getElementById('p-desc').value;
+            const volume = document.getElementById('p-vol').value;
+            const minStock = document.getElementById('p-min').value;
+
+            // For MVP, assuming a Category 1 exists. In real app, fetch categories first.
+            // If Category 1 doesn't exist, this will fail. Ideally we should create it first or seed it.
+            const payload = {
+                sku, name, description: desc, price: 100, // Dummy price
+                categoryId: 1,
+                volumePerUnit: parseFloat(volume),
+                minStockLevel: parseInt(minStock)
+            };
+
+            try {
+                const res = await fetch(`${API_BASE}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!res.ok) throw new Error('Failed to create product. Ensure Category ID 1 exists.');
+
+                closeModal();
+                fetchProducts();
+            } catch (err) {
+                alert(err.message);
+            }
+        }
+
+        async function downloadReport() {
+            try {
+                const res = await fetch(`${API_BASE}/reports/inventory`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const blob = await res.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = "inventory-report.pdf";
+                    document.body.appendChild(a);
+                    a.click();
+                    a.remove();
+                } else {
+                    alert('Failed to download report');
+                }
+            } catch (e) {
+                alert('Error downloading report');
+            }
+        }
+
+        function showQr(sku) {
+            const url = `${API_BASE}/qr/product/${sku}`;
+            // Open in new tab or modal
+            window.open(url, '_blank', 'width=400,height=400');
+        }
+
+        function openModal() { document.getElementById('modal').classList.remove('hidden'); }
+        function closeModal() { document.getElementById('modal').classList.add('hidden'); }
+        function logout() { localStorage.removeItem('token'); window.location.href = 'index.html'; }
+
+        // Start
+        fetchProducts();
+    </script>
+</body>
+
+</html>
