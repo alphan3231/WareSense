@@ -38,4 +38,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "assigned_picker_id")
     private User assignedPicker;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private java.util.List<OrderItem> items;
 }
