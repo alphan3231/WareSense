@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.6.0] - 2026-01-02
+### Added
+- **Order Management System**:
+    - Created `OrderController` for managing orders (Create, List, Update).
+    - Implemented `OrderService` with logic for creating orders and updating status.
+    - Updated `InventoryService` to deduct stock upon order creation (`removeStock`).
+    - Added `OrderDto` and `CreateOrderRequest` DTOs.
+    - Refactored `Order` entity to include `OrderItem` list.
+
 ## [0.5.0] - 2025-12-30
 ### Added
 - **Frontend Served via Spring Boot**:
