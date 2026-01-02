@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,7 +35,8 @@ public class InventoryService {
                 .sum();
 
         if (currentShelfUsage + quantity > shelf.getCapacityTier()) {
-            throw new RuntimeException("Shelf capacity exceeded! Available: " + (shelf.getCapacityTier() - currentShelfUsage));
+            throw new RuntimeException(
+                    "Shelf capacity exceeded! Available: " + (shelf.getCapacityTier() - currentShelfUsage));
         }
 
         // Find existing item on this shelf or create new
@@ -68,5 +70,34 @@ public class InventoryService {
                 .shelfCode(item.getShelf().getCode())
                 .quantity(item.getQuantity())
                 .build();
+    }
+
+    @Transactional
+    public void removeStock(Long productId, Integer quantity) {
+        List<InventoryItem> items = inventoryItemRepository.findByProductId(productId);
+
+        int totalAvailable = items.stream().mapToInt(InventoryItem::getQuantity).sum();
+        if (totalAvailable < quantity) {
+            throw new RuntimeException("Insufficient stock for Product ID " + productId + "! Available: "
+                    + totalAvailable + ", Requested: " + quantity);
+        }
+
+        int remainingToRemove = quantity;
+        for (InventoryItem item : items) {
+            if (remainingToRemove <= 0)
+                break;
+
+            int itemQty = item.getQuantity();
+            if (itemQty > 0) {
+                if (itemQty >= remainingToRemove) {
+                    item.setQuantity(itemQty - remainingToRemove);
+                    remainingToRemove = 0;
+                } else {
+                    item.setQuantity(0);
+                    remainingToRemove -= itemQty;
+                }
+                inventoryItemRepository.save(item);
+            }
+        }
     }
 }
