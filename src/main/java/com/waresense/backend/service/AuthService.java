@@ -24,6 +24,7 @@ public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
+    private final AuditLogService auditLogService;
 
     public AuthDto.AuthResponse register(AuthDto.RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -45,6 +46,7 @@ public class AuthService {
                 .build();
 
         userRepository.save(user);
+        auditLogService.logAction("REGISTER", user.getUsername(), "User registered with role: " + role.getName());
 
         UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
         String token = jwtUtils.generateToken(userDetails);
@@ -60,10 +62,10 @@ public class AuthService {
         System.out.println("Login attempt for: " + request.getUsername());
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
+                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (Exception e) {
             System.err.println("Authentication failed for user: " + request.getUsername() + " - " + e.getMessage());
+            auditLogService.logAction("LOGIN_FAILED", request.getUsername(), "Reason: " + e.getMessage());
             throw e;
         }
 
@@ -71,6 +73,7 @@ public class AuthService {
         String token = jwtUtils.generateToken(userDetails);
 
         User user = userRepository.findByUsername(request.getUsername()).orElseThrow();
+        auditLogService.logAction("LOGIN_SUCCESS", user.getUsername(), "User logged in successfully");
 
         return AuthDto.AuthResponse.builder()
                 .token(token)
