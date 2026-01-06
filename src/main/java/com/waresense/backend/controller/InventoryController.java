@@ -12,15 +12,24 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class InventoryController {
 
-    private final InventoryService inventoryService;
+    private final com.waresense.backend.service.ReportService reportService;
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
     public ResponseEntity<InventoryDto> addStock(
             @RequestParam Long productId,
             @RequestParam Long shelfId,
-            @RequestParam Integer quantity
-    ) {
+            @RequestParam Integer quantity) {
         return ResponseEntity.ok(inventoryService.addStock(productId, shelfId, quantity));
+    }
+
+    @GetMapping("/report/csv")
+    @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER')")
+    public ResponseEntity<String> getInventoryCsv() {
+        String csv = reportService.generateInventoryCsv();
+        return ResponseEntity.ok()
+                .header(org.springframework.http.HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"inventory.csv\"")
+                .body(csv);
     }
 }
