@@ -2,8 +2,10 @@ package com.waresense.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class BackendApplication {
 
 	public static void main(String[] args) {
@@ -11,7 +13,8 @@ public class BackendApplication {
 	}
 
 	@org.springframework.context.annotation.Bean
-	public org.springframework.boot.CommandLineRunner commandLineRunner(org.springframework.core.env.Environment env, com.waresense.backend.repository.RoleRepository roleRepository) {
+	public org.springframework.boot.CommandLineRunner commandLineRunner(org.springframework.core.env.Environment env,
+			com.waresense.backend.repository.RoleRepository roleRepository) {
 		return args -> {
 			// Seed Roles
 			java.util.List<String> roles = java.util.Arrays.asList("ROLE_ADMIN", "ROLE_MANAGER", "ROLE_COURIER");
