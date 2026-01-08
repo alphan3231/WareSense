@@ -18,7 +18,7 @@ public class StockTransferService {
 
     private final StockTransferRepository stockTransferRepository;
     private final ProductRepository productRepository;
-    private final InventoryRepository inventoryRepository; // Assuming this exists or needed for logic
+    private final InventoryItemRepository inventoryItemRepository; // Corrected repository name
     private final ShelfRepository shelfRepository;
     private final UserRepository userRepository;
 
